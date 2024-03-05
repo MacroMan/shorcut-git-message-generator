@@ -17,4 +17,5 @@ Adds a Git helper field in Shortcut with a generated commit message
 ![Technical area](images/technical-area.png)
 
 If you haven't set it, you will get a warning message
+
 ![Warning](images/usage-warning.png)
