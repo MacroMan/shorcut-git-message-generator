@@ -70,6 +70,8 @@ const appendElement = (element) => {
 
 const replaceExistingCommitMessage = (commitMessage) => {
   document.querySelector(".git-commit-msg").value = commitMessage;
+  document.querySelector(".git-link-story-to-commit").value =
+    `git commit -m '${commitMessage}'`;
 };
 
 const observer = new MutationObserver(() => {
