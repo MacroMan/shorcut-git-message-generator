@@ -34,18 +34,21 @@ const stringToHtml = (string) => {
 };
 
 const createLabelElement = () => {
-  return stringToHtml("<p>Commit message</p>");
+  appendElement(stringToHtml("<p>Commit message</p>"));
 };
 
 const createWarningElement = () => {
-  return stringToHtml(
-    `<p style="color: #ff6a6a;">Warning! Missing "Technical Area" field, cannot generate commit message</p>`,
+  appendElement(
+    stringToHtml(
+      `<p style="color: #ff6a6a;">Warning! Missing "Technical Area" field, cannot generate commit message</p>`,
+    ),
   );
 };
 
 const createCommitMessageElement = (commitMessage) => {
-  return stringToHtml(
-    `
+  appendElement(
+    stringToHtml(
+      `
       <div class="attribute-group">
         <div class="attribute-toggle">
           <a href="#" class="clipboard" data-clipboard-target=".git-commit-message" data-tooltip="Copy to clipboard" data-tabindex="" tabindex="2">
@@ -57,11 +60,16 @@ const createCommitMessageElement = (commitMessage) => {
         </div>    
       </div>
     `,
+    ),
   );
 };
 
 const appendElement = (element) => {
   document.getElementById("link-to-branch").appendChild(element);
+};
+
+const replaceExistingCommitMessage = (commitMessage) => {
+  document.querySelector(".git-commit-msg").value = commitMessage;
 };
 
 const observer = new MutationObserver(() => {
@@ -73,13 +81,14 @@ const observer = new MutationObserver(() => {
 
   const commitMessage = getCommitMessage();
 
-  appendElement(createLabelElement());
+  createLabelElement();
 
-  appendElement(
-    commitMessage
-      ? createCommitMessageElement(commitMessage)
-      : createWarningElement(),
-  );
+  if (commitMessage) {
+    createCommitMessageElement(commitMessage);
+    replaceExistingCommitMessage(commitMessage);
+  } else {
+    createWarningElement();
+  }
 });
 
 observer.observe(document.body, { childList: true, subtree: true });
